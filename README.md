@@ -4,5 +4,5 @@ Example for doing the following as part of CI:
 - Build it
 - Run test cases
 
-# Will need to install Jenkins
+# Must install Jenkins on MAC or Linux
 - Jenkins file includes the example of pipeline
