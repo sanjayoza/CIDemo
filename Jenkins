@@ -1,0 +1,28 @@
+pipeline {
+    agent any
+
+    // Git location here is public, cannot check in code into it
+    // Code tested for Ubuntu 20.04 (may have to change python version)
+    stages {
+        stage('checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/sanjayoza/CourseTest.git'
+                sh 'pwd'
+                sh 'ls -al'
+                sh 'python3 -m py_compile addValues.py funcs.py'
+                stash(name: 'compiled', includes: '*.py*')
+            }
+        }
+        stage('test') {
+            steps {
+                sh 'py.test --verbose --junit-xml reports/results.xml testCases.py'
+            }
+            post {
+                always {
+                    junit 'reports/results.xml'
+                }
+            }
+        }
+        
+    }
+}
